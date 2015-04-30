@@ -1,0 +1,33 @@
+.color-square{
+	background-color:#D9534F;
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
+	border-top-left-radius:3px;
+	border-top-right-radius:3px;
+	/*box-sizing:border-box;*/
+	height:200px;
+	width:200px;
+	margin: 0 auto;
+	border-width:2px;
+	border-color:#111;
+	border-style:none;
+}
+
+.color-square.hover{
+	border-style:solid;
+}
+
+.container{
+	text-align: center;
+	margin-top:30px;
+}
+
+.row {
+	margin-bottom:30px;
+	margin-top:30px;
+}
+
+.target-color{
+	font-weight:bold;
+}
+
