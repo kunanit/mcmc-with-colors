@@ -15,7 +15,14 @@ def instructions(request):
 
 def stage(request):
 	p = Participant(start_time=datetime.now(),target_color='blue')
-	context = {'userid':p.pk}
+	p.save()
+
+	# compute an initial color, sampled uniformly
+	x_t = (uniform().rvs(size=3)*256).astype(int)
+	initialColor = RGBToHTMLColor(tuple(x_t.tolist()))
+
+	context = {'userid':p.pk,
+			'initialColor':initialColor}
 	return render(request,'colortask/stage.html',context)
 
 def conclusion(request):
@@ -45,17 +52,13 @@ def HTMLColorToRGB(colorstring):
 
 
 ### data-returning functions / MCMC modules ###
-def initialize(request):
-	x_t = (uniform().rvs(size=3)*256).astype(int).tolist()
-	return HttpResponse(RGBToHTMLColor(tuple(x_t)))
-
 
 def proposal(request):
 	x_t = HTMLColorToRGB(request.GET['prevcolor'])
 
 	# proposal distribution parameters
 	mean_prop = x_t
-	sd_prop = 30
+	sd_prop = 50
 	cov_prop = [[sd_prop**2,0,0],[0,sd_prop**2,0],[0,0,sd_prop**2]]
 
 	# draw sample from proposal distribution, checking if out-of-bounds
@@ -64,8 +67,27 @@ def proposal(request):
 		x_proposal = multivariate_normal(mean_prop,cov_prop).rvs().astype(int)
 	return HttpResponse(RGBToHTMLColor(tuple(x_proposal)))
 
-
-def save(request):
+def saveQuestionData(request):
+	# create new object to store in database
+	userid = request.GET['userid']
+	p = Participant.objects.get(pk=userid)
+	q = Question(
+			participant=p,
+			question_number=request.GET['currentQuestion'],
+			color_left=request.GET['color0'],
+			color_right=request.GET['color1'],
+			selected_color=request.GET['selectedColor'],
+			timestamp=datetime.now(),
+			)
+	q.save()
 
 	return HttpResponse()
 
+def saveParticipantData(request):
+	# record that participant finished question set
+	userid = request.GET['userid']
+	p = Participant.objects.get(pk=userid)
+	p.completed = True
+	p.save()
+
+	return HttpResponse()

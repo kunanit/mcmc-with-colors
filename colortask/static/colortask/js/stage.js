@@ -1,47 +1,72 @@
+// Main script for color task
+
+
+// number of questions
+var maxQuestions = 10
+
 var main = function(){
 
-	var maxQuestions = 60
-	var questionNumber = 1
-	var previousColor
-
-	$('#max-questions').text(maxQuestions);
-
-	// initialize a color
-	var previousColor = $.get('/colortask/initialize', function(data){
-		return data;
-	});
-
+	// initial color retrieved from html context data
+	var previousColor = initialColor
 
 	// initialize question
 	refreshColors(previousColor);
+	var currentQuestion = 1
 
+	$('#max-questions').text(maxQuestions);
 
-	// repeated task
+	// Repeated task
 	$('.color-square').click(function(){
-		alert('new question');
+		// save data
+		var selectedColor = $(this).css('background-color')
+		saveQuestionData(currentQuestion,selectedColor)
+
+		// refresh colors if question limit not reached
 		refreshColors(previousColor);
-		// display question number
-		questionNumber++;
-		$('#counter-value').text(questionNumber);
+		currentQuestion++;
+		$('#counter-value').text(currentQuestion);
+		
 	})
-	
-
 }
-
-$(document).ready(main)
 
 var refreshColors = function(previousColor){
-	// get proposal based on previous color
-	// var proposalColor
-	var proposalColor = $.get('/colortask/proposal',{prevcolor:previousColor}, function(data){
-		return data;
+	
+	// retrieve proposal color with ajax request
+	$.get('/colortask/proposal/',{prevcolor:previousColor}, function(data){
+		var proposalColor = data
+
+		// shuffle left/right color display
+		var colors = Math.random()<0.5 ? [previousColor,proposalColor] : [proposalColor,previousColor]
+
+		// set colors on display
+		$('#color-left').css('background-color',colors[0]);
+		$('#color-right').css('background-color',colors[1]);
+
 	});
-
-	// shuffle left/right color display
-	var colors = Math.random()<0.5 ? [previousColor,proposalColor] : [proposalColor,previousColor]
-
-	// set colors on display
-	$('#color-left').css('background-color',colors[0])
-	$('#color-right').css('background-color',colors[1])
-
 }
+
+var saveQuestionData = function(currentQuestion,selectedColor){
+	var color0 = $('#color-left').css('background-color')
+	var color1 = $('#color-right').css('background-color')
+	$.get('/colortask/saveQuestionData/',{
+		userid:userid,
+		currentQuestion:currentQuestion,
+		color0:color0,
+		color1:color1,
+		selectedColor:selectedColor,
+	},function(){
+		if (currentQuestion>=maxQuestions){
+			// redirect after recording participant completed questions
+			saveParticipantData();
+		}
+	});
+}
+
+var saveParticipantData = function(){
+	$.get('/colortask/saveParticipantData/',{userid:userid},function(){
+		// redirect to debrief page
+		window.location.href = '/colortask/conclusion/'
+	});
+}
+
+$(document).ready(main);

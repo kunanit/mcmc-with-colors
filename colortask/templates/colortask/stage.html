@@ -2,8 +2,13 @@
 {% load staticfiles %}
 
 {% block extrahead %}
-    <!-- Custom styles for this template -->
-    <script src="{% static 'colortask/js/stage.js' %}"></script>
+  <!-- make context data available to main script -->
+  <script>
+    var initialColor = "{{initialColor}}"
+    var userid = "{{userid}}"
+  </script>
+  <!-- main script for repeated task -->
+  <script src="{% static 'colortask/js/stage.js' %}"></script>
 {% endblock %}
 
 
@@ -24,17 +29,17 @@
 
         <!-- option 1 -->
         <div class="col-xs-6 col-md-4 col-md-offset-2">
-          <div class="color-square color-left" style="background-color:#eee;"></div>
+          <div id="color-left" class="color-square" style="background-color:#eee;"></div>
         </div>
 
         <!-- option 2 -->
         <div class="col-xs-6 col-md-4">
-          <div class="color-square color-right" style="background-color:#eee;"></div>
+          <div id="color-right" class="color-square" style="background-color:#ddd;"></div>
         </div>
       </div>
       <!-- <hr> -->
       <div class="row">
-           <h4><span class="counter-value">1</span> of <span class="max-questions">60</span></h4>
+           <h4><span id="counter-value">1</span> of <span id="max-questions">60</span></h4>
       </div>
     </div>
 
