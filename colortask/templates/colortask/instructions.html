@@ -2,26 +2,30 @@
 {% load staticfiles %}
 
 {% block extrahead %}
+<script src="{% static 'colortask/js/instructions.js' %}"></script>
 <!-- <link rel="stylesheet" href="{% static 'flaskmanager/css/home.css' %}"/> -->
 {% endblock %}
 
 {% block content %}
 
-
-<h3> Example </h3>
 <div class="container">
       <!-- Example row of columns -->
       <div class="row header">
         <div class="col-md-10 col-md-offset-1">
 
         <h2> Instructions </h2>
-		<h4> Choose the color that matches most with the target color </h4>
+        <br>
+		<h4> Choose the color that is closest to the requested color. </h4>
 		<br>
 		<hr>
-		<br>
-          <h2> Option choice </h2>
+		<div class="alert alert-success" role="alert" style="display:none;">
+  			Good job! <a href={% url 'colortask:stage' %} class="alert-link">Click to continue.</a>
+		</div>
+		<div class="alert alert-danger" role="alert" style="display:none;">
+  			Nope, try again!
+		</div>
           <br>
-           <h4>instruction text <span class="target-color">bold</span>?</h4>
+           <h3>Which color is closer to <span class="target-color">sky blue</span>?</h3>
 
         </div>
       </div>
@@ -30,17 +34,13 @@
 
         <!-- option 1 -->
         <div class="col-xs-6 col-md-4 col-md-offset-2">
-          <div id="color-left" class="color-square" style="background-color:#eee;"></div>
+          <div id="color-left" class="color-square" style="background-color:#22e;"></div>
         </div>
 
         <!-- option 2 -->
         <div class="col-xs-6 col-md-4">
-          <div id="color-right" class="color-square" style="background-color:#ddd;"></div>
+          <div id="color-right" class="color-square" style="background-color:#2c2;"></div>
         </div>
-      </div>
-      <!-- <hr> -->
-      <div class="row">
-           <h4><span id="counter-value">1</span> of <span id="max-questions">60</span></h4>
       </div>
     </div>
 {% endblock %}
