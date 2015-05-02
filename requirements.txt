@@ -7,6 +7,5 @@ static3==0.5.1
 wsgiref==0.1.2
 pycrypto==2.6.1
 django-bootstrap3==5.1.1
-boto==2.36.0
-django-storages==1.1.8
 numpy==1.9.2
+whitenoise==1.0.6
