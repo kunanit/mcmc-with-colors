@@ -3,6 +3,7 @@
 
 // number of questions
 // var maxQuestions = 10 // defined from context
+// var proposalSD
 
 var main = function(){
 
@@ -32,21 +33,6 @@ var main = function(){
 	})
 }
 
-var refreshColors = function(previousColor){
-	
-	// retrieve proposal color with ajax request
-	$.get('/colortask/proposal/',{prevcolor:previousColor,proposalSD:proposalSD}, function(data){
-		var proposalColor = data
-
-		// shuffle left/right color display
-		var colors = Math.random()<0.5 ? [previousColor,proposalColor] : [proposalColor,previousColor]
-
-		// set colors on display
-		$('#color-left').css('background-color',colors[0]);
-		$('#color-right').css('background-color',colors[1]);
-
-	});
-}
 
 var saveQuestionData = function(currentQuestion,selectedColor){
 	var color0 = $('#color-left').css('background-color')
@@ -62,6 +48,22 @@ var saveQuestionData = function(currentQuestion,selectedColor){
 			// redirect after recording participant completed questions
 			saveParticipantData();
 		}
+	});
+}
+
+var refreshColors = function(previousColor){
+	console.log(previousColor)
+	// retrieve proposal color with ajax request
+	$.get('/colortask/proposal/',{prevcolor:previousColor,proposalSD:proposalSD}, function(data){
+		var proposalColor = data
+
+		// shuffle left/right color display
+		var colors = Math.random()<0.5 ? [previousColor,proposalColor] : [proposalColor,previousColor]
+
+		// set colors on display
+		$('#color-left').css('background-color',colors[0]);
+		$('#color-right').css('background-color',colors[1]);
+
 	});
 }
 

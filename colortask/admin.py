@@ -29,7 +29,7 @@ export_participants_csv.short_description = 'Export participants csv file'
 
 class ParticipantAdmin(admin.ModelAdmin):
 	actions = [export_participants_csv]
-	list_display = ['pk','start_time','target_color','sd_proposal','completed']
+	list_display = ['pk','start_time','target_color','proposal_sd','completed']
 
 class QuestionAdmin(admin.ModelAdmin):
 	actions = [export_questions_csv]

@@ -30,7 +30,9 @@ def stage(request):
 
 	# compute an initial color, sampled uniformly
 	x_t = uniform(high=256,size=3).astype(int)
-	initial_color = RGBToHTMLColor(tuple(x_t.tolist()))
+	# initial_color = RGBToHTMLColor(tuple(x_t.tolist()))
+
+	initial_color = "rgb({0},{1},{2})".format(x_t[0],x_t[1],x_t[2])
 
 	context = {'userid':p.pk,
 			'initialColor':initial_color,
@@ -54,32 +56,36 @@ def RGBToHTMLColor(rgb_tuple):
     return hexcolor
 
 # from http://code.activestate.com/recipes/266466-html-colors-tofrom-rgb-tuples/
-def HTMLColorToRGB(colorstring):
-	""" convert #RRGGBB to an (R, G, B) tuple """
-	colorstring = colorstring.strip()
-	if colorstring[0] == '#': colorstring = colorstring[1:]
-	if len(colorstring) != 6:
-		raise ValueError, "input #%s is not in #RRGGBB format" % colorstring
-	r, g, b = colorstring[:2], colorstring[2:4], colorstring[4:]
-	r, g, b = [int(n, 16) for n in (r, g, b)]
-	return (r, g, b)
+# def HTMLColorToRGB(colorstring):
+# 	""" convert #RRGGBB to an (R, G, B) tuple """
+# 	colorstring = colorstring.strip()
+# 	if colorstring[0] == '#': colorstring = colorstring[1:]
+# 	if len(colorstring) != 6:
+# 		raise ValueError, "input #%s is not in #RRGGBB format" % colorstring
+# 	r, g, b = colorstring[:2], colorstring[2:4], colorstring[4:]
+# 	r, g, b = [int(n, 16) for n in (r, g, b)]
+# 	return (r, g, b)
 
 
 ### data-returning functions / MCMC modules ###
 
 def proposal(request):
-	x_t = HTMLColorToRGB(request.GET['prevcolor'])
-	sd_prop = request.GET['proposalSD']
+	# prevcolor has format 'rgb(123,45,67)'
+	x_t = tuple([int(i) for i in request.GET['prevcolor'].strip('rgb()').split(',')])
+	# x_t = HTMLColorToRGB(request.GET['prevcolor'])
+	sd_prop = float(request.GET['proposalSD'])
 
 	# proposal distribution parameters
 	mean_prop = x_t
-	sd_prop = 50
+	# sd_prop = 50
 	cov_prop = diag([sd_prop**2]*3)
 
 	# draw sample from proposal distribution, checking if out-of-bounds
 	x_proposal = [-1]
 	while any(xi<0 or xi>255 for xi in x_proposal):
 		x_proposal = multivariate_normal(mean_prop,cov_prop).astype(int)
+
+	# return has html color code, e.g. #f0f0f0
 	return HttpResponse(RGBToHTMLColor(tuple(x_proposal)))
 
 def saveQuestionData(request):
