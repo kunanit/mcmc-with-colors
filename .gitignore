@@ -3,3 +3,4 @@ venv
 staticfiles
 local_settings.py
 *.DS_Store
+db.sqlite3
