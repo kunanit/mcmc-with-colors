@@ -5,6 +5,7 @@ class Participant(models.Model):
 	start_time = models.DateTimeField()
 	target_color = models.CharField(max_length=100)
 	completed = models.BooleanField(default=False)
+	proposal_sd = models.FloatField()
 	def __unicode__(self):
 		return "Participant {0}".format(self.pk)
 

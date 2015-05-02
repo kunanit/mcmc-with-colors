@@ -22,9 +22,12 @@ var main = function(){
 		saveQuestionData(currentQuestion,selectedColor)
 
 		// refresh colors if question limit not reached
-		refreshColors(previousColor);
-		currentQuestion++;
-		$('#counter-value').text(currentQuestion);
+		if (currentQuestion<maxQuestions){
+			refreshColors(previousColor);
+			currentQuestion++;
+			$('#counter-value').text(currentQuestion);
+		}
+		
 		
 	})
 }
@@ -32,7 +35,7 @@ var main = function(){
 var refreshColors = function(previousColor){
 	
 	// retrieve proposal color with ajax request
-	$.get('/colortask/proposal/',{prevcolor:previousColor}, function(data){
+	$.get('/colortask/proposal/',{prevcolor:previousColor,proposalSD:proposalSD}, function(data){
 		var proposalColor = data
 
 		// shuffle left/right color display

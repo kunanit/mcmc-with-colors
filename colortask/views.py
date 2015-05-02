@@ -20,7 +20,12 @@ def stage(request):
 	colorchoices = ['crimson','sky blue', 'purple','violet']
 	target_color = random.choice(colorchoices)
 
-	p = Participant(start_time=datetime.now(),target_color='blue')
+	# choose proposal sd
+	proposal_sd = 50
+
+	p = Participant(start_time=datetime.now(),
+					target_color=target_color,
+					proposal_sd=proposal_sd)
 	p.save()
 
 	# compute an initial color, sampled uniformly
@@ -29,7 +34,8 @@ def stage(request):
 
 	context = {'userid':p.pk,
 			'initialColor':initial_color,
-			'targetColor':target_color}
+			'targetColor':target_color,
+			'proposalSD':proposal_sd}
 	return render(request,'colortask/stage.html',context)
 
 def conclusion(request):
@@ -62,6 +68,7 @@ def HTMLColorToRGB(colorstring):
 
 def proposal(request):
 	x_t = HTMLColorToRGB(request.GET['prevcolor'])
+	sd_prop = request.GET['proposalSD']
 
 	# proposal distribution parameters
 	mean_prop = x_t
