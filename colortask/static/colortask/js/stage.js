@@ -68,7 +68,6 @@ var saveQuestionData = function(currentQuestion,selectedColor){
 }
 
 var refreshColors = function(previousColor){
-	console.log(previousColor)
 	// retrieve proposal color with ajax request
 	$.get('/colortask/proposal/',{prevcolor:previousColor,proposalSD:proposalSD}, function(data){
 		var proposalColor = data
