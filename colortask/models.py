@@ -5,9 +5,9 @@ class Participant(models.Model):
 	start_time = models.DateTimeField()
 	target_color = models.CharField(max_length=100)
 	completed = models.BooleanField(default=False)
-	proposal_sd = models.FloatField()
+	proposal_sd = models.FloatField('proposal stdev')
 	from_mturk = models.BooleanField(default=False)
-	mturk_code = models.CharField(max_length=50,default='')
+	mturk_code = models.CharField(max_length=50,default='',blank=True)
 	def __unicode__(self):
 		return "Participant {0}".format(self.pk)
 
