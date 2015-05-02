@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from scipy.stats import multivariate_normal, uniform, bernoulli, gaussian_kde
+from numpy import diag
+from numpy.random import multivariate_normal, uniform
 from datetime import datetime
 from colortask.models import Participant,Question
-# import numpy as np
+
 
 ### website views ###
 
@@ -59,12 +60,12 @@ def proposal(request):
 	# proposal distribution parameters
 	mean_prop = x_t
 	sd_prop = 50
-	cov_prop = [[sd_prop**2,0,0],[0,sd_prop**2,0],[0,0,sd_prop**2]]
+	cov_prop = diag([sd**2]*3)
 
 	# draw sample from proposal distribution, checking if out-of-bounds
 	x_proposal = [-1]
 	while any(xi<0 or xi>255 for xi in x_proposal):
-		x_proposal = multivariate_normal(mean_prop,cov_prop).rvs().astype(int)
+		x_proposal = multivariate_normal(mean_prop,cov_prop).astype(int)
 	return HttpResponse(RGBToHTMLColor(tuple(x_proposal)))
 
 def saveQuestionData(request):
