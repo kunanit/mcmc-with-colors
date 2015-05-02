@@ -13,14 +13,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-# secret key in local settings
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = False
 
@@ -56,14 +49,6 @@ ROOT_URLCONF = 'mcmc_with_colors.urls'
 WSGI_APPLICATION = 'mcmc_with_colors.wsgi.application'
 
 
-# Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -76,7 +61,6 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = '/static/'
-
 
 
 ## HEROKU SPECIFIC CONFIG
