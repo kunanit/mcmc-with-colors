@@ -4,6 +4,7 @@ from numpy import diag
 from numpy.random import multivariate_normal, uniform
 from datetime import datetime
 from colortask.models import Participant,Question
+import random
 
 
 ### website views ###
@@ -15,15 +16,20 @@ def instructions(request):
 	return render(request,'colortask/instructions.html')
 
 def stage(request):
+	# choose the target color
+	colorchoices = ['crimson','sky blue', 'purple','violet']
+	target_color = random.choice(colorchoices)
+
 	p = Participant(start_time=datetime.now(),target_color='blue')
 	p.save()
 
 	# compute an initial color, sampled uniformly
-	x_t = (uniform().rvs(size=3)*256).astype(int)
-	initialColor = RGBToHTMLColor(tuple(x_t.tolist()))
+	x_t = uniform(high=256,size=3).astype(int)
+	initial_color = RGBToHTMLColor(tuple(x_t.tolist()))
 
 	context = {'userid':p.pk,
-			'initialColor':initialColor}
+			'initialColor':initial_color,
+			'targetColor':target_color}
 	return render(request,'colortask/stage.html',context)
 
 def conclusion(request):
@@ -60,7 +66,7 @@ def proposal(request):
 	# proposal distribution parameters
 	mean_prop = x_t
 	sd_prop = 50
-	cov_prop = diag([sd**2]*3)
+	cov_prop = diag([sd_prop**2]*3)
 
 	# draw sample from proposal distribution, checking if out-of-bounds
 	x_proposal = [-1]
