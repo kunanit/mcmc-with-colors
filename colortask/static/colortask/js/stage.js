@@ -23,7 +23,7 @@ var main = function(){
 
 		// refresh colors if question limit not reached
 		if (currentQuestion<maxQuestions){
-			refreshColors(previousColor);
+			refreshColors(selectedColor);
 			currentQuestion++;
 			$('#counter-value').text(currentQuestion);
 		}
