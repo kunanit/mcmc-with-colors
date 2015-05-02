@@ -61,7 +61,7 @@ var saveQuestionData = function(currentQuestion,selectedColor){
 		selectedColor:selectedColor,
 	},function(){
 		if (currentQuestion>=maxQuestions){
-			window.location.href = '/colortask/conclusion/?userid='+userid;r
+			window.location.href = '/colortask/conclusion/?userid='+userid;
 			// saveParticipantData();
 		}
 	});
