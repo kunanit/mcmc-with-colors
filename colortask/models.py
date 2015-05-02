@@ -18,3 +18,13 @@ class Question(models.Model):
 	color_right = models.CharField(max_length=100)
 	selected_color = models.CharField(max_length=100)
 
+class Parameter(models.Model):
+	proposal_sd = models.IntegerField()
+	max_questions = models.IntegerField()
+	def __unicode__(self):
+		return "Default parameters"
+
+class Color(models.Model):
+	color = models.CharField(max_length=50)
+	def __unicode__(self):
+		return self.color

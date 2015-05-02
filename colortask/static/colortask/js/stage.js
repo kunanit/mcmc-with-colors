@@ -2,7 +2,7 @@
 
 
 // number of questions
-var maxQuestions = 10
+// var maxQuestions = 10 // defined from context
 
 var main = function(){
 

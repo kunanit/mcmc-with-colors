@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from numpy import diag
 from numpy.random import multivariate_normal, uniform
 from datetime import datetime
-from colortask.models import Participant,Question
+from colortask.models import Participant,Question,Parameter,Color
 import random
 
 
@@ -17,15 +17,15 @@ def instructions(request):
 
 def stage(request):
 	# choose the target color
-	colorchoices = ['crimson','sky blue', 'purple','violet']
+	colorchoices = [c.color for c in Color.objects.all()]
 	target_color = random.choice(colorchoices)
 
-	# choose proposal sd
-	proposal_sd = 50
+	# mcmc parameters
+	params = Parameter.objects.all().first()
 
 	p = Participant(start_time=datetime.now(),
 					target_color=target_color,
-					proposal_sd=proposal_sd)
+					proposal_sd=params.proposal_sd)
 	p.save()
 
 	# compute an initial color, sampled uniformly
@@ -35,7 +35,8 @@ def stage(request):
 	context = {'userid':p.pk,
 			'initialColor':initial_color,
 			'targetColor':target_color,
-			'proposalSD':proposal_sd}
+			'proposalSD':params.proposal_sd,
+			'maxQuestions':params.max_questions}
 	return render(request,'colortask/stage.html',context)
 
 def conclusion(request):
