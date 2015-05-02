@@ -8,9 +8,9 @@ def export_participants_csv(modeladmin, request, queryset):
 	response = HttpResponse(content_type='text/csv')
 	response['Content-Disposition'] = 'attachment; filename=participants.csv'
 	writer = csv.writer(response, csv.excel)
-	writer.writerow(['participant_id','start_time','target_color','completed','proposal_sd'])
+	writer.writerow(['participant_id','start_time','target_color','completed','proposal_sd','from_mturk'])
 	for p in Participant.objects.all():
-		writer.writerow([p.pk,p.start_time,p.target_color,p.completed,p.proposal_sd])
+		writer.writerow([p.pk,p.start_time,p.target_color,p.completed,p.proposal_sd,p.from_mturk])
 	return response
 export_participants_csv.short_description = 'Export participants csv file'
 
@@ -29,7 +29,7 @@ export_participants_csv.short_description = 'Export participants csv file'
 
 class ParticipantAdmin(admin.ModelAdmin):
 	actions = [export_participants_csv]
-	list_display = ['pk','start_time','target_color','proposal_sd','completed']
+	list_display = ['pk','start_time','target_color','proposal_sd','completed','from_mturk']
 
 class QuestionAdmin(admin.ModelAdmin):
 	actions = [export_questions_csv]

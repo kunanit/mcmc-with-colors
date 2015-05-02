@@ -6,6 +6,8 @@ class Participant(models.Model):
 	target_color = models.CharField(max_length=100)
 	completed = models.BooleanField(default=False)
 	proposal_sd = models.FloatField()
+	from_mturk = models.BooleanField(default=False)
+	mturk_code = models.CharField(max_length=50,default='')
 	def __unicode__(self):
 		return "Participant {0}".format(self.pk)
 

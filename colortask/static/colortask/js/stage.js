@@ -45,8 +45,8 @@ var saveQuestionData = function(currentQuestion,selectedColor){
 		selectedColor:selectedColor,
 	},function(){
 		if (currentQuestion>=maxQuestions){
-			// redirect after recording participant completed questions
-			saveParticipantData();
+			window.location.href = '/colortask/conclusion/?userid='+userid;r
+			// saveParticipantData();
 		}
 	});
 }

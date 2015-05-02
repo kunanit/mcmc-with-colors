@@ -19,7 +19,14 @@
 		<br>
 		<hr>
 		<div class="alert alert-success" role="alert" style="display:none;">
-  			Good job! | <a href={% url 'colortask:stage' %} class="alert-link">Continue</a>
+  			Good job! 
+          {% if mturk %}
+          <a href="/colortask/stage/?mturk=true" class="alert-link">Start the HIT</a>
+          {% else %}
+          <a href="/colortask/stage/" class="alert-link">Start the questionnaire</a>
+          {% endif %}
+          
+        
 		</div>
 		<div class="alert alert-danger" role="alert" style="display:none;">
   			Nope, try again!

@@ -12,10 +12,18 @@ import random
 def index(request):
 	return render(request,'colortask/index.html')
 
+def instructions_mturk(request):
+	context = {'mturk':True}
+	return render(request,'colortask/instructions.html',context)	
+
 def instructions(request):
 	return render(request,'colortask/instructions.html')
 
 def stage(request):
+	if 'mturk' in request.GET:
+		from_mturk = True
+	else: from_mturk = False
+
 	# choose the target color
 	colorchoices = [c.color for c in Color.objects.all()]
 	target_color = random.choice(colorchoices)
@@ -25,7 +33,8 @@ def stage(request):
 
 	p = Participant(start_time=datetime.now(),
 					target_color=target_color,
-					proposal_sd=params.proposal_sd)
+					proposal_sd=params.proposal_sd,
+					from_mturk=from_mturk)
 	p.save()
 
 	# compute an initial color, sampled uniformly
@@ -38,10 +47,29 @@ def stage(request):
 			'initialColor':initial_color,
 			'targetColor':target_color,
 			'proposalSD':params.proposal_sd,
-			'maxQuestions':params.max_questions}
+			'maxQuestions':params.max_questions,
+			'mturk':from_mturk}
 	return render(request,'colortask/stage.html',context)
 
 def conclusion(request):
+
+	# record that participant finished question set
+	userid = request.GET['userid']
+	p = Participant.objects.get(pk=userid)
+	p.completed = True
+
+	if p.from_mturk:
+		if not p.mturk_code:
+			# generate "random" code
+			letters = ''.join([chr(random.randint(97,122)) for i in range(4)])
+			p.mturk_code = "{0}{1}".format(letters,userid)
+			p.save()
+
+		context = {'code':p.mturk_code}
+
+		return render(request,'colortask/conclusion_mturk.html',context)
+
+	p.save()
 	return render(request,'colortask/conclusion.html')
 
 
@@ -104,11 +132,11 @@ def saveQuestionData(request):
 
 	return HttpResponse()
 
-def saveParticipantData(request):
-	# record that participant finished question set
-	userid = request.GET['userid']
-	p = Participant.objects.get(pk=userid)
-	p.completed = True
-	p.save()
+# def saveParticipantData(request):
+# 	# record that participant finished question set
+# 	userid = request.GET['userid']
+# 	p = Participant.objects.get(pk=userid)
+# 	p.completed = True
+# 	p.save()
 
-	return HttpResponse()
+# 	return HttpResponse()

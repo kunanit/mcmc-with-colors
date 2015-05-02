@@ -1,0 +1,22 @@
+{% extends "colortask/basesite.html" %}
+{% load staticfiles %}
+
+{% block extrahead %}
+<!-- <link rel="stylesheet" href="{% static 'colortask/css/home.css' %}"/> -->
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Example row of columns -->
+  <div class="row header">
+    <div class="col-md-10 col-md-offset-1">
+       <h3>Thanks for completing the HIT!</h3>
+       <br>
+       <h4>Copy the following code into the HIT window to complete the task:</h4>
+       <br>
+       <div class="well"><h4>{{code}}</h4></div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
