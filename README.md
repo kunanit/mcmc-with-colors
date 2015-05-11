@@ -4,6 +4,8 @@ Determining subjective beliefs on color distributions by using people as element
 
 Created as a project for Harvard CS 186 (Economics and Computation), Spring 2015.
 
+### Report ###
+[View the report](https://github.com/kunanit/mcmc-with-colors/raw/master/report.pdf)
 
 ### Simulation and data analysis
 View ipython notebooks on nbviewer:
