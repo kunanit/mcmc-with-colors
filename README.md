@@ -14,7 +14,7 @@ View ipython notebooks on nbviewer:
 
 
 ### Web application
-Try out the color choice task at [mcmc-with-colors.herokuapp.com](mcmc-with-colors.herokuapp.com). The web application is built using Django, a python web framework.
+Try out the color choice task at [mcmc-with-colors.herokuapp.com](http://mcmc-with-colors.herokuapp.com). The web application is built using Django, a python web framework.
 
 ### References:
 [Adam Sanborn and Thomas Griffiths, "Markov Chain Monte Carlo with People" (NIPS 2008)](papers.nips.cc/paper/3214-markov-chain-monte-carlo-with-people.pdf)
